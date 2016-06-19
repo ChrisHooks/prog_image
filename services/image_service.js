@@ -7,7 +7,6 @@ const gm = Promise.promisifyAll(require('gm'));
 ImageService = {
   doesImageExist: (filename) => {
     let basename = path.basename(filename)
-      console.log(filename);
     return fs.existsSync("./public/" + basename);
   },
 
@@ -32,8 +31,6 @@ ImageService = {
   },
 
   convertFormat: (filename, format) => {
-    console.log(filename);
-    console.log(format);
     var writeStream = fs.createWriteStream(filename.split(".")[0] + '.' + format)
     var convertedImageStream = gm(filename).setFormat(format).stream();
     var d = Promise.defer();

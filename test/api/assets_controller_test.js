@@ -12,6 +12,22 @@ describe("AssetController", () => {
     });
   }
 
+  var cleanUpFiles = () => {
+    fs.readdirSync(process.cwd() + "/uploads").map((file) => {
+      fs.unlinkSync(process.cwd() + "/uploads/" + file);
+    });
+
+    fs.readdirSync(process.cwd() + "/public").map((file) => {
+      if(file !== ".gitignore") {
+        fs.unlinkSync(process.cwd() + "/public/" + file);
+      }
+    });
+  }
+
+  afterEach(() => {
+    cleanUpFiles();
+  })
+
   describe("POST /assets", () => {
     it('should return 201 when posting file with multipart/form-data', () => {
       var response = postImageToServer();
@@ -21,21 +37,24 @@ describe("AssetController", () => {
 
     it('should return a json object representing the file', () => {
       var response = postImageToServer();
-      expect(JSON.parse(response.body)["path"]).to.eql("/assets/image.jpg");
+      expect(response).to.comprise.of.json({
+        path: "/public/image.jpg"
+      });
       return chakram.wait();
     });
   });
 
   describe("Get /public", () => {
+    beforeEach(() => {
+      fs.createReadStream("./test/fixtures/image.jpg").pipe(fs.createWriteStream("./public/image.jpg"));
+    })
     it("should return the file", () => {
-      postImageToServer();
       var response = chakram.get("http://localhost:3000/public/image.jpg")
       expect(response).to.have.status(200)
       return chakram.wait();
     });
 
     it("should auto convert if the format is different", () => {
-      postImageToServer();
       var response = chakram.get("http://localhost:3000/public/image.png")
       expect(response).to.have.status(200)
       return chakram.wait();
