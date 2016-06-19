@@ -1,0 +1,25 @@
+{
+  "name": "prog_image",
+  "version": "1.0.0",
+  "description": "ProgImage",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "./node_modules/mocha/bin/mocha ./test/*/*_test.js"
+  },
+  "keywords": [
+    "asset",
+    "api",
+    "server"
+  ],
+  "author": "Christopher Hooks <chris@hooks.me.uk>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "mocha": "^2.5.3"
+  },
+  "devDependencies": {
+    "chakram": "^1.3.0",
+    "frisby": "^0.8.5"
+  }
+}
