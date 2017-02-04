@@ -10,7 +10,7 @@ app.use('/public', ProgImage.AssetsController.showImage, express.static('public'
 app.get('/status', ProgImage.StatusController.show);
 app.post('/assets', upload.single('file'), ProgImage.AssetsController.create);
 
-app.port = 3000;
+app.port = process.env.PORT || 3000;
 
 app.listen(app.port, () => {
   console.log('listening on ' + app.port);
