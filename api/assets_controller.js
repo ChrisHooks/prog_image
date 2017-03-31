@@ -8,8 +8,9 @@ const AssetsController = {
     if(ImageService.doesImageExist(req.file.originalname)) {
       return res.status(409).send({error: "Resource all ready exists"})
     }
-    fs.createReadStream("./" + req.file.path).pipe(fs.createWriteStream('./public/' + req.file.originalname));
-    res.status(201).send({path: "/public/image.jpg"});
+    let path = "/public/image.jpg"
+    fs.createReadStream("./" + req.file.path).pipe(fs.createWriteStream('.' + path));
+    res.status(201).send({path: path});
   },
 
   showImage: (req, res, next) => {
