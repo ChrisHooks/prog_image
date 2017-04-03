@@ -5,12 +5,17 @@ const ImageService = require('../services/image_service.js')
 
 const AssetsController = {
   create: (req, res, next) => {
-    if(ImageService.doesImageExist(req.file.originalname)) {
-      return res.status(409).send({error: "Resource all ready exists"})
-    }
-    let path = "/public/image.jpg"
-    fs.createReadStream("./" + req.file.path).pipe(fs.createWriteStream('.' + path));
-    res.status(201).send({path: path});
+    let files = []
+    req.files.map((file) => {
+      if(ImageService.doesImageExist(file.originalname)) {
+        return res.status(409).send({error: "Resource all ready exists"})
+      }
+      file.cdnUrl = './public/' + file.filename + '.jpg';
+      fs.createReadStream("./" + file.path).pipe(fs.createWriteStream('./public/' + file.filename + '.jpg'));
+      files.push(file)
+    })
+
+    res.status(201).send(files);
   },
 
   showImage: (req, res, next) => {

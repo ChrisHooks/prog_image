@@ -8,7 +8,7 @@ const upload = multer({ dest: './uploads/'});
 
 app.use('/public', ProgImage.AssetsController.showImage, express.static('public'));
 app.get('/status', ProgImage.StatusController.show);
-app.post('/assets', upload.single('file'), ProgImage.AssetsController.create);
+app.post('/assets', upload.any(), ProgImage.AssetsController.create);
 
 app.port = process.env.PORT || 3000;
 
